@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SPY</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff1a1a">
+    <meta name="description" content="Увлекательная игра в шпиона для компании друзей">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ШПИОН">
+    <meta name="application-name" content="ШПИОН">
+    <meta name="msapplication-TileColor" content="#ff1a1a">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('public/uploads/upload_1.jpg') center/cover no-repeat;
+            opacity: 0.25;
+            z-index: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(20,0,0,0.9) 50%, rgba(10,10,10,0.95) 100%);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lang-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            max-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ff1a1a;
+            text-shadow: 0 0 20px rgba(255,26,26,0.5), 0 0 40px rgba(255,26,26,0.3);
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .lang-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .lang-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .lang-btn {
+            background: linear-gradient(135deg, rgba(255,26,26,0.15) 0%, rgba(255,26,26,0.05) 100%);
+            border: 2px solid rgba(255,26,26,0.4);
+            color: #fff;
+            padding: 18px 30px;
+            font-size: 1.1rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lang-btn:hover {
+            background: linear-gradient(135deg, rgba(255,26,26,0.35) 0%, rgba(255,26,26,0.15) 100%);
+            border-color: #ff1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,26,26,0.3);
+        }
+
+        .lang-btn:active {
+            transform: translateY(0);
+        }
+
+        .setup-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .setup-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #ff1a1a;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .player-count-label {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .player-input-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .player-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,26,26,0.5);
+            background: rgba(255,26,26,0.1);
+            color: #ff1a1a;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .player-btn:hover {
+            background: rgba(255,26,26,0.3);
+            transform: scale(1.1);
+        }
+
+        .player-count {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+            border: none;
+            color: #fff;
+            padding: 20px 60px;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 10px 40px rgba(255,26,26,0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255,26,26,0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #888;
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            border-color: rgba(255,255,255,0.4);
+            color: #ccc;
+        }
+
+        .game-screen {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 30px;
+            overflow-y: auto;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: #ff1a1a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .game-info {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(255,26,26,0.1) 0%, rgba(20,20,20,0.9) 100%);
+            border: 2px solid rgba(255,26,26,0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: rgba(255,26,26,0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,26,26,0.2);
+        }
+
+        .card.revealed {
+            background: linear-gradient(135deg, rgba(255,26,26,0.3) 0%, rgba(40,0,0,0.95) 100%);
+            border-color: #ff1a1a;
+        }
+
+        .card.used {
+            opacity: 0.3;
+            pointer-events: none;
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .card-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: rgba(255,26,26,0.6);
+        }
+
+        .card-word {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            text-shadow: 0 0 10px rgba(255,26,26,0.5);
+        }
+
+        .card-word.spy {
+            color: #ff1a1a;
+            font-size: 1rem;
+        }
+
+        .spy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .timer-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #ff1a1a;
+            width: 100%;
+            transform-origin: left;
+            animation: timerShrink 1s linear forwards;
+        }
+
+        @keyframes timerShrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, rgba(255,26,26,0.2) 0%, rgba(255,26,26,0.1) 100%);
+            border: 2px solid rgba(255,26,26,0.4);
+            color: #fff;
+            padding: 16px 40px;
+            font-size: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, rgba(255,26,26,0.4) 0%, rgba(255,26,26,0.2) 100%);
+            border-color: #ff1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,26,26,0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,26,26,0.3); }
+            50% { box-shadow: 0 0 40px rgba(255,26,26,0.6); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 26, 26, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 1000;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @media (max-width: 400px) {
+            .logo { font-size: 2.5rem; }
+            .cards-grid { gap: 10px; }
+            .card-word { font-size: 1rem; }
+        }
+    </style>
+  <script data-arena-recording="true">(function(){
+"use strict";
+var SK="__arena_rec",RRWEB_CDN="https://cdn.jsdelivr.net/npm/rrweb@2.0.0-alpha.4/dist/rrweb.min.js";
+var MAX_RECORDING_MS=600000,MAX_RRWEB_EVENTS=30000,MAX_INTERACTIONS=5000,MAX_CURSOR_POINTS=10000,recStopped=false;
+var stored=null;try{var raw=sessionStorage.getItem(SK);if(raw)stored=JSON.parse(raw);}catch(ex){}
+var meta=stored?stored.m||null:null,rrwebEvents=stored?stored.r||[]:[],rrwebStarted=false,startTime=stored?stored.st||Date.now():Date.now();
+var interactions=stored?stored.i||[]:[],cursorPath=stored?stored.c||[]:[],lastCursorSample=0,lastScrollSample=0;
+var pageHeight=document.documentElement.scrollHeight;
+var viewport={width:window.innerWidth,height:window.innerHeight};
+function isCapped(){if(recStopped)return true;if(Date.now()-startTime>=MAX_RECORDING_MS){recStopped=true;return true;}return false;}
+function persist(){try{var d=JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime});sessionStorage.setItem(SK,d);}catch(ex){rrwebEvents=rrwebEvents.slice(Math.floor(rrwebEvents.length/2));try{sessionStorage.setItem(SK,JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime}));}catch(ex2){}}}
+setInterval(persist,5000);
+window.addEventListener("resize",function(){viewport={width:window.innerWidth,height:window.innerHeight};pageHeight=document.documentElement.scrollHeight;});
+document.addEventListener("click",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var el=e.target;var tag=el.tagName?el.tagName.toLowerCase():"";var text=(el.textContent||"").trim().substring(0,80);var classes=el.className&&typeof el.className==="string"?el.className.substring(0,120):"";interactions.push({type:"click",t:Date.now()-startTime,x:Math.round(e.clientX),y:Math.round(e.clientY),element:{tag:tag,text:text,classes:classes}});},true);
+window.addEventListener("scroll",function(){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var now=Date.now();if(now-lastScrollSample<200)return;lastScrollSample=now;var scrollY=Math.round(window.scrollY||window.pageYOffset||0);var depthPct=pageHeight>viewport.height?Math.min(100,Math.round(((scrollY+viewport.height)/pageHeight)*100)):100;interactions.push({type:"scroll",t:now-startTime,y:scrollY,depth_pct:depthPct});},{passive:true});
+document.addEventListener("mousemove",function(e){if(isCapped()||cursorPath.length>=MAX_CURSOR_POINTS)return;var now=Date.now();if(now-lastCursorSample<250)return;lastCursorSample=now;cursorPath.push([Math.round(e.clientX),Math.round(e.clientY),now-startTime]);},{passive:true});
+document.addEventListener("keydown",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"))return;interactions.push({type:"keydown",t:Date.now()-startTime,key:e.key});},true);
+function buildAnalytics(){if(!meta)return null;var ph=document.documentElement.scrollHeight;var maxScroll=0,clickElements={},firstClick=null,firstScroll=null,totalDistance=0;for(var i=0;i<interactions.length;i++){var ev=interactions[i];if(ev.type==="scroll"){if(ev.depth_pct>maxScroll)maxScroll=ev.depth_pct;if(!firstScroll)firstScroll=ev.t;}if(ev.type==="click"){if(!firstClick)firstClick=ev.t;var key=ev.element.tag+":"+ev.element.text.substring(0,30);clickElements[key]=true;}}for(var j=1;j<cursorPath.length;j++){var dx=cursorPath[j][0]-cursorPath[j-1][0];var dy=cursorPath[j][1]-cursorPath[j-1][1];totalDistance+=Math.sqrt(dx*dx+dy*dy);}var duration=Date.now()-startTime;var clickHeatmap=[];for(var k=0;k<interactions.length;k++){if(interactions[k].type==="click")clickHeatmap.push([interactions[k].x,interactions[k].y]);}return{generation_id:meta.generationId,tournament_id:meta.tournamentId,started_at:new Date(startTime).toISOString(),ended_at:new Date().toISOString(),duration_ms:duration,viewport:viewport,page_height:ph,interactions:interactions,cursor_path:cursorPath,click_heatmap:clickHeatmap,summary:{total_clicks:clickHeatmap.length,total_scrolls:interactions.filter(function(e){return e.type==="scroll";}).length,max_scroll_depth_pct:maxScroll,unique_elements_clicked:Object.keys(clickElements).length,time_to_first_click_ms:firstClick,time_to_first_scroll_ms:firstScroll,cursor_distance_px:Math.round(totalDistance),active_time_ms:duration}};}
+function loadRrweb(){if(rrwebStarted)return;rrwebStarted=true;var s=document.createElement("script");s.src=RRWEB_CDN;s.onload=function(){var rec=(window.rrweb&&window.rrweb.record)||window.rrwebRecord;if(!rec)return;rec({emit:function(event){if(rrwebEvents.length>=MAX_RRWEB_EVENTS||isCapped())return;rrwebEvents.push(event);}});};s.onerror=function(){};document.head.appendChild(s);}
+window.addEventListener("message",function(e){if(!e.data||typeof e.data.type!=="string")return;if(e.data.type==="arena:init"){if(!meta)startTime=Date.now();meta={generationId:e.data.generationId||e.data.modelId,tournamentId:e.data.tournamentId};persist();loadRrweb();if(e.source)e.source.postMessage({type:"arena:init-ack",generationId:meta.generationId},"*");}if(e.data.type==="arena:flush"){var resp={type:"arena:recording-data",generationId:meta?meta.generationId:null,rrwebEvents:rrwebEvents,analytics:buildAnalytics()};try{sessionStorage.removeItem(SK);}catch(ex){}if(e.source)e.source.postMessage(resp,"*");}});
+loadRrweb();
+})();</script>
+  <script data-arena-views="true">(function(){var isTop=false;try{isTop=window.self===window.top;}catch(e){}if(!isTop)return;window.__ARENA_META={generationId:"kimi-k2.6",tournamentId:"2e5af109-3b30-45de-87c4-3d973ac19ef4"};var payload={tournamentId:"2e5af109-3b30-45de-87c4-3d973ac19ef4",modelId:"kimi-k2.6"};try{var r=document.referrer;if(r){var u=new URL(r);payload.referrerDomain=u.hostname;}}catch(e){}try{var vid=null;try{vid=localStorage.getItem('arena_vid');}catch(e){}if(!vid){vid=typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2)).slice(0,32);try{localStorage.setItem('arena_vid',vid);}catch(e){}}if(vid)payload.viewerId=vid;}catch(e){}try{fetch("https://www.designarena.ai/api/agon/page-views",{"method":"POST","headers":{"Content-Type":"application/json"},"body":JSON.stringify(payload),"keepalive":true});}catch(e){}})();</script>
+</head>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    <div class="bg-image"></div>
+    <div class="overlay"></div>
+    <div class="watermark">Decagon</div>
+
+    <div class="container">
+        <div class="lang-screen fade-in" id="langScreen">
+            <div class="logo"></div>
+            <div class="lang-buttons">
+                <button class="lang-btn" onclick="selectLanguage('uz')">O'zbekcha</button>
+                <button class="lang-btn" onclick="selectLanguage('ru')">Русский</button>
+                <button class="lang-btn" onclick="selectLanguage('en')">English</button>
+            </div>
+        </div>
+
+        <div class="setup-screen" id="setupScreen">
+            <div class="setup-title" id="setupTitle">Настройка игры</div>
+            <div class="player-count-label" id="playerLabel">Количество игроков</div>
+            <div class="player-input-container">
+                <button class="player-btn" onclick="changePlayers(-1)">−</button>
+                <div class="player-count" id="playerCount">4</div>
+                <button class="player-btn" onclick="changePlayers(1)">+</button>
+            </div>
+            <button class="start-btn pulse" id="startBtn" onclick="startGame()">Начать игру</button>
+            <button class="back-btn" id="backBtn" onclick="goBack()">Назад</button>
+        </div>
+
+        <div class="game-screen" id="gameScreen">
+            <div class="game-header">
+                <div class="game-title" id="gameTitle">ИГРА НАЧАЛАСЬ</div>
+                <div class="game-info" id="gameInfo">Нажмите на карточку, чтобы увидеть слово</div>
+            </div>
+            <div class="cards-grid" id="cardsGrid"></div>
+            <button class="reset-btn" id="resetBtn" onclick="resetGame()">Новая игра</button>
+        </div>
+    </div>
+
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installButton = document.createElement('button');
+        installButton.textContent = '📱 Установить приложение';
+        installButton.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(255,26,26,0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        `;
+        
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installButton.style.display = 'none';
+            }
+        });
+        
+        document.body.appendChild(installButton);
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installButton.style.display = 'none';
+        });
+
+        // Check if app is running in standalone mode
+        function isStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone === true;
+        }
+
+        if (isStandalone()) {
+            console.log('App is running in standalone mode');
+            document.body.classList.add('standalone-mode');
+        }
+
+        const words = {
+            uz: [
+                "Olma","Nok","Uzum","Anor","Shaftoli","Qovun","Tarvuz","Behi","Anjir","Olcha",
+                "Gilos","O'rik","Limon","Apelsin","Banan","Kivi","Ananas","Malina","Qulupnay","Chernika",
+                "Non","Sut","Qaymoq","Yog'","Pishloq","Tuxum","Go'sht","Baliq","Tovuq","Qo'zichoq",
+                "Palov","Manti","Lag'mon","Shashlik","Somsa","Chuchvara","Norin","Sho'rva","Mastava","Dimlama",
+                "Ko'cha","Bog'","Maktab","Universitet","Kutubxona","Muzey","Teatr","Kino","Stadion","Bozor",
+                "Dorixona","Shifoxona","Poliklinika","Bank","Pochta","Mehmonxona","Restoran","Kafe","Choyxona","Park",
+                "Daryo","Ko'l","Tog'","Dala","O'rmon","Sahro","Plaj","Orol","Vodiy","Zomin",
+                "Avtobus","Poezd","Samolyot","Kema","Mashina","Velosiped","Mototsikl","Taksi","Metro","Tramvay",
+                "Telefon","Kompyuter","Televizor","Kamera","Soat","Lampa","Muzlatgich","Kir yuvish","Chang yutgich","Konditsioner",
+                "Stol","Stul","Divan","Krovat","Shkaf","Zina","Eshik","Deraza","Balkon","Tom",
+                "Kitob","Ruchka","Qalam","Daftar","Qog'oz","Gazeta","Jurnal","Xarita","Kalendar","Soat",
+                "Quyosh","Oy","Yulduz","Bulut","Yomg'ir","Qor","Shamol","Chaqmoq","Do'l","Tuman",
+                "Qish","Bahor","Yoz","Kuz","Yanvar","Fevral","Mart","Aprel","May","Iyun",
+                "Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr","Dushanba","Seshanba","Chorshanba","Payshanba",
+                "Juma","Shanba","Yakshanba","Soat","Daqiqa","Soniya","Kun","Hafta","Oy","Yil",
+                "Oq","Qora","Qizil","Yashil","Sariq","Ko'k","Binafsha","Pushti","Jigarrang","Kulrang",
+                "Katta","Kichik","Uzun","Qisqa","Eng","Yuqori","Past","Chap","O'ng","Markaz",
+                "Yaxshi","Yomon","Chiroyli","Xunuk","Qimmat","Arzon","Yangi","Eski","Birinchi","Oxirgi",
+                "Otam","Onam","Oka","Singil","O'g'il","Qiz","Bola","Oila","Do'st","Qo'shni",
+                "Ish","O'qish","Yozish","Gapirish","Eshtish","Ko'rish","Yurish","Yugurish","O'tirish","Uxlash",
+                "Suv","Choy","Qahva","Shirinlik","Shokolad","Kek","Pirog","Pechenye","Muzqaymoq","Sharbat",
+                "O'rtoq","Ustoz","Shogird","Hokim","Prezident","Vazir","Deputat","Sudya","Prokuror","Advokat",
+                "Qonun","Qoida","Jazo","Mukofot","Huquq","Burch","Vazifa","Mas'uliyat","Ishonch","Vafodorlik",
+                "Sevgi","Nafsat","G'azab","Xursandchilik","Qayg'u","Tashvish","Umidsizlik","Ishonch","Vahima","Sokinlik",
+                "Musiqa","Qo'shiq","Raqs","Teatr","Kino","Serial","Multfilm","Konsert","Festival","Tanlov",
+                "Futbol","Basketbol","Voleybol","Tennis","Shaxmat","Gimnastika","Yugurish","Suzish","Velosiped","Chang'i",
+                "Kimyo","Fizika","Biologiya","Matematika","Tarix","Geografiya","Adabiyot","Ingliz tili","Rus tili","Arab tili",
+                "Shifokor","O'qituvchi","Muhandis","Arxitektor","Dasturchi","Jurnalist","Artist","Xonanda","Rassom","Haykaltarosh",
+                "Temir","Oltin","Kumush","Mis","Qo'rg'oshin","Alyuminiy","Rux","Qalay","Platina","Diamant",
+                "Gul","Daraxt","Barg","Shox","ildiz","Meva","Urug'","G'uncha","Bargak","Poya",
+                "It","Mushuk","Ot","Sigir","Qo'y","Echki","Tuya","Xachir","Tovuq","O'rdak",
+                "Sher","Yo'lbars","Fil","Maymun","Kenguru","Zebra","Jiraf","Krokdir","Ayiq","Bo'ri",
+                "Baliq","Qora baliq","Loso'n","Sazan","Forel","Skumbriya","Tuna","Ikra","Krevetka","Krab",
+                "Qush","Burgut","Qirg'i","To'qay","Kaklik","Tovuq","O'rdak","G'o'z","Zumrud","Qaldirg'och",
+                "Hasharot","Chumoli","Ari","Pashsha","Qung'iz","Kapalak","Chigirtka","Qurt","O'rgimchak","Qanot",
+                "O'simlik","Gullaydigan","Daraxt","Buta","O't","Meva","Sabzavot","Don","Ziravor","Dorivor",
+                "Kiyim","Ko'ylak","Shim","Shim","Palto","Jaket","Kurtka","Futbolka","Rubashka","Kostyum",
+                "Oyoq kiyim","Etik","Tufli","Krossovka","Sandalet","Shapka","Shlyapa","Kaska","Ko'zoynak","Soat",
+                "Zargarlik","Zinapoya","Halqa","Sirg'a","Bo'yinbog'","Qo'lsoat","Sumka","Hamyon","Kalit","Qulf",
+                "Qurol","Pistolet","Miltiq","Qilich","Xanjar","O'q","Kamon","Qalqon","Zirh","Dubulg'a",
+                "Asbob","Chakmach","Pichog'","O'tkir","Bolg'a","Moy","Gugurt","Chang'i","Taymer","Kompas",
+                "Transport","Avtomobil","Yuk mashina","Avtobus","Trolleybus","Tramvay","Metro","Taksi","Velosiped","Mototsikl",
+                "Qurilish","Uy","Bino","Binolar","Minor","Ko'prik","Yo'l","Tunnel","Stansiya","Aeroport",
+                "Texnika","Telefon","Kompyuter","Planshet","Noutbuk","Printer","Skanner","Faks","Modem","Router",
+                "Oshxona","Pech","Gaz","Mikroto'lqinli","Blender","Mikser","Tovag'","Qozon","Qoshiq","Pichoq",
+                "Xonadon","Xona","Mehmonxona","Yotoqxona","Oshxona","Vanna","To'xtat","Balkon","Garaj","Hovli",
+                "Mebel","Stol","Stul","Divan","Kreslo","Krovat","Shkaf","Tumba","Zina","Oyna",
+                "Matbuot","Gazeta","Jurnal","Kitob","Afisha","Reklama","Plakat","Buleten","Katalog","Broshyura",
+                "O'yin","Shaxmat","Nard","Domino","Karta","Tosh","Qog'oz","Qaychi","Lego","Pazl",
+                "Sport","Stadion","Maydon","To'p","Raketka","Taymer","Gimnastika","Fitnes","Yoga","Karate",
+                "San'at","Rasm","Haykal","Surat","Fotosurat","Kolleksiya","Muzey","Galereya","Ekspozitsiya","Ko'rgazma",
+                "Din","Masjid","Cherkov","Sinagoga","Budda ibodatxonasi","Namoz","Duoy","Qur'on","Injil","Tavrot",
+                "Falsafa","Mantiq","Etika","Estetika","Metafizika","Ontologiya","Gnoseologiya","Dialetika","Aksiologiya","Kosmologiya",
+                "Psixologiya","Xotira","Tafakkur","E'tiqod","Orzu","Intizor","Vahima","Stress","Depressiya","Baxt",
+                "Siyosat","Prezident","Parlament","Hukumat","Saylov","Partiya","Konstitutsiya","Demokratiya","Respublika","Monarxiya",
+                "Iqtisodiyot","Pul","Bank","Valyuta","Savdo","Bozor","Ishlab chiqarish","Xizmat","Sug'urta","Kredit",
+                "Jamiyat","Madaniyat","An'analar","Bayram","Navro'z","Ramazon","Qurbon hayiti","Mustaqillik","Konstitutsiya","Bayroq",
+                "Geografiya","O'zbekiston","Toshkent","Samarqand","Buxoro","Xiva","Farg'ona","Andijon","Namangan","Qashqadaryo",
+                "Tabiat","Landshaft","Iqlim","Ob-havo","Harorat","Namlik","Shamol","Bosim","Tropik","Arktika",
+                "Kosmos","Sayyora","Yulduz","Galaktika","Komet","Asteroid","Sun'iy yo'ldosh","Kosmonavt","Raketa","Stansiya",
+                "Fan","Tadqiqot","Eksperiment","Gipoteza","Nazariya","Qonun","Formula","Algebra","Geometriya","Statistika",
+                "Tibbiyot","Kasallik","Dori","Vaksina","Operatsiya","Terapiya","Diagnostika","Analiz","Shifokor","Hamshira",
+                "Ta'lim","Maktab","Litsey","Kollej","Institut","Universitet","Akademiya","Dars","Imtihon","Sertifikat",
+                "Aloqa","Internet","Elektron pochta","Sms","Qo'ng'iroq","Video","Konferensiya","Radio","Televideniye",
+                "Xavfsizlik","Politsiya","Militsiya","Armiya","Jangchi","Ofitser","General","Podpolkovnik","Mayor","Leytenant",
+                "Oziq-ovqat","Non","Go'sht","Sut","Smetana","Yog'","Tuxum","Pishloq","Kefir","Ayran",
+                "Mevalar","Olma","Nok","Anor","Uzum","Shaftoli","O'rik","Gilos","Qulupnay","Malina",
+                "Sabzavotlar","Kartoshka","Piyoz","Sarimsoq","Sabzi","Qovun","Tarvuz","Qalampir","Bodring","Karam",
+                "Ziravorlar","Murch","Tuz","Qalampir","Zira","Kurkuma","Zanjabil","Dafna yaprog'i","Kashnich","Muskat",
+                "Ichimliklar","Suv","Choy","Qahva","Sharbat","Limonad","Kompot","Mors","Kvass","Seltzer",
+                "Shirinliklar","Shokolad","Kek","Pirog","Tort","Vafli","Pechenye","Karamel","Marmelad","Jele",
+                "Mahsulotlar","Un","Shakar","Tuz","Moy","Guruch","Makaron","Grechka","Soya","Kukuruza",
+                "Kiyim-kechak","Ko'ylak","Shim","Jaket","Palto","Kurtka","Futbolka","Rubashka","Kostyum","Sarvon",
+                "Aksessuarlar","Soat","Ko'zoynak","Sumka","Hamyon","Kalit","Zargarlik","Shlyapa","Shapka","Sharf",
+                "Kosmetika","Krem","Pomada","Tush","Maska","Lak","Bo'yoq","Pudra","Rimel","Qalamlash",
+                "Uy jihozlari","Muzlatgich","Kir yuvish mashinasi","Pech","Televizor","Kompyuter","Telefon","Kamera","Soat","Lampa",
+                "Oshxona jihozlari","Mikroto'lqinli pech","Blender","Mikser","Tovag'","Qozon","Qoshiq","Pichoq","Kesgich","Raskladka",
+                "Tozalash vositalari","Chang yutgich","Kir yuvish vositasi","Hamma tozalash","Shampun","Sabun","Tish pastasi","Tish cho'tkasi","Qog'oz","Handbag",
+                "Bolalar mahsulotlari","Sut aralashmasi","Tovuq","Kukruza","Makaron","Suv","Shirinlik","O'yinchoq","Kiyim","Idish"
+            ],
+            ru: [
+                "Яблоко","Груша","Виноград","Гранат","Персик","Дыня","Арбуз","Айва","Инжир","Вишня",
+                "Черешня","Абрикос","Лимон","Апельсин","Банан","Киви","Ананас","Малина","Клубника","Черника",
+                "Хлеб","Молоко","Сливки","Масло","Сыр","Яйцо","Мясо","Рыба","Курица","Баранина",
+                "Плов","Манты","Лагман","Шашлык","Самса","Пельмени","Нарын","Суп","Мастава","Дымлама",
+                "Улица","Сад","Школа","Университет","Библиотека","Музей","Театр","Кино","Стадион","Рынок",
+                "Аптека","Больница","Поликлиника","Банк","Почта","Гостиница","Ресторан","Кафе","Чайхана","Парк",
+                "Река","Озеро","Гора","Поле","Лес","Пустыня","Пляж","Остров","Долина","Ущелье",
+                "Автобус","Поезд","Самолет","Корабль","Машина","Велосипед","Мотоцикл","Такси","Метро","Трамвай",
+                "Телефон","Компьютер","Телевизор","Камера","Часы","Лампа","Холодильник","Стиралка","Пылесос","Кондиционер",
+                "Стол","Стул","Диван","Кровать","Шкаф","Лестница","Дверь","Окно","Балкон","Крыша",
+                "Книга","Ручка","Карандаш","Тетрадь","Бумага","Газета","Журнал","Карта","Календарь","Часы",
+                "Собака","Кошка","Лошадь","Корова","Овца","Коза","Верблюд","Осел","Курица","Гусь",
+                "Солнце","Луна","Звезда","Облако","Дождь","Снег","Ветер","Молния","Град","Туман",
+                "Зима","Весна","Лето","Осень","Январь","Февраль","Март","Апрель","Май","Июнь",
+                "Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь","Понедельник","Вторник","Среда","Четверг",
+                "Пятница","Суббота","Воскресенье","Час","Минута","Секунда","День","Неделя","Месяц","Год",
+                "Белый","Черный","Красный","Зеленый","Желтый","Синий","Фиолетовый","Розовый","Коричневый","Серый",
+                "Большой","Маленький","Длинный","Короткий","Высокий","Низкий","Левый","Правый","Центральный","Средний",
+                "Хороший","Плохой","Красивый","Уродливый","Дорогой","Дешевый","Новый","Старый","Первый","Последний",
+                "Отец","Мать","Брат","Сестра","Сын","Дочь","Ребенок","Семья","Друг","Сосед",
+                "Работа","Учиться","Писать","Говорить","Слышать","Видеть","Ходить","Бегать","Сидеть","Спать",
+                "Вода","Чай","Кофе","Десерт","Шоколад","Торт","Пирог","Печенье","Мороженое","Сок",
+                "Товарищ","Учитель","Ученик","Губернатор","Президент","Министр","Депутат","Судья","Прокурор","Адвокат",
+                "Закон","Правило","Наказание","Награда","Право","Обязанность","Задача","Ответственность","Доверие","Верность",
+                "Любовь","Страсть","Гнев","Радость","Горе","Тревога","Отчаяние","Надежда","Паника","Спокойствие",
+                "Музыка","Песня","Танец","Театр","Кино","Сериал","Мультфильм","Концерт","Фестиваль","Конкурс",
+                "Футбол","Баскетбол","Волейбол","Теннис","Шахматы","Гимнастика","Бег","Плавание","Велоспорт","Лыжи",
+                "Химия","Физика","Биология","Математика","История","География","Литература","Английский","Русский","Арабский",
+                "Врач","Учитель","Инженер","Архитектор","Программист","Журналист","Артист","Певец","Художник","Скульптор",
+                "Железо","Золото","Серебро","Медь","Свинец","Алюминий","Цинк","Олово","Платина","Алмаз",
+                "Цветок","Дерево","Лист","Ветка","Корень","Плод","Семя","Бутон","Листок","Стебель",
+                "Собака","Кот","Лошадь","Корова","Овца","Коза","Верблюд","Осел","Курица","Утка",
+                "Лев","Тигр","Слон","Обезьяна","Кенгуру","Зебра","Жираф","Крокодил","Медведь","Волк",
+                "Рыба","Карп","Лосось","Сазан","Форель","Скумбрия","Тунец","Икра","Креветка","Краб",
+                "Птица","Орел","Сокол","Филин","Куропатка","Курица","Утка","Гусь","Попугай","Ласточка",
+                "Насекомое","Муравей","Пчела","Муха","Жук","Бабочка","Кузнечик","Червь","Паук","Крыло",
+                "Растение","Цветущее","Дерево","Куст","Трава","Фрукт","Овощ","Зерно","Пряность","Лекарство",
+                "Одежда","Рубашка","Брюки","Джинсы","Пальто","Пиджак","Куртка","Футболка","Сорочка","Костюм",
+                "Обувь","Сапоги","Туфли","Кроссовки","Сандалии","Шапка","Шляпа","Каска","Очки","Часы",
+                "Украшения","Цепочка","Кольцо","Серьги","Галстук","Наручные часы","Сумка","Кошелек","Ключ","Замок",
+                "Оружие","Пистолет","Винтовка","Меч","Кинжал","Стрела","Лук","Щит","Броня","Шлем",
+                "Инструмент","Молоток","Нож","Ножницы","Топор","Масло","Спички","Лыжи","Таймер","Компас",
+                "Транспорт","Автомобиль","Грузовик","Автобус","Троллейбус","Трамвай","Метро","Такси","Велосипед","Мотоцикл",
+                "Строительство","Дом","Здание","Сооружения","Башня","Мост","Дорога","Тоннель","Станция","Аэропорт",
+                "Техника","Телефон","Компьютер","Планшет","Ноутбук","Принтер","Сканер","Факс","Модем","Роутер",
+                "Кухня","Плита","Газ","Микроволновка","Блендер","Миксер","Сковорода","Кастрюля","Ложка","Нож",
+                "Домашнее","Комната","Гостиная","Спальня","Кухня","Ванная","Туалет","Балкон","Гараж","Двор",
+                "Мебель","Стол","Стул","Диван","Кресло","Кровать","Шкаф","Тумбочка","Лестница","Зеркало",
+                "Пресса","Газета","Журнал","Книга","Афиша","Реклама","Плакат","Бюллетень","Каталог","Брошюра",
+                "Игра","Шахматы","Нарды","Домино","Карты","Камень","Бумага","Ножницы","Лего","Пазл",
+                "Спорт","Стадион","Площадка","Мяч","Ракетка","Секундомер","Гимнастика","Фитнес","Йога","Карате",
+                "Искусство","Картина","Статуя","Фотография","Коллекция","Музей","Галерея","Экспозиция","Выставка","Творчество",
+                "Религия","Мечеть","Церковь","Синагога","Буддийский храм","Молитва","Мольба","Коран","Библия","Тора",
+                "Философия","Логика","Этика","Эстетика","Метафизика","Онтология","Гносеология","Диалектика","Аксиология","Космология",
+                "Психология","Память","Мышление","Вера","Мечта","Ожидание","Страх","Стресс","Депрессия","Счастье",
+                "Политика","Президент","Парламент","Правительство","Выборы","Партия","Конституция","Демократия","Республика","Монархия",
+                "Экономика","Деньги","Банк","Валюта","Торговля","Рынок","Производство","Услуга","Страхование","Кредит",
+                "Общество","Культура","Традиции","Праздник","Навруз","Рамадан","Курбан-байрам","Независимость","Конституция","Флаг",
+                "География","Узбекистан","Ташкент","Самарканд","Бухара","Хива","Фергана","Андижан","Наманган","Кашкадарья",
+                "Природа","Ландшафт","Климат","Погода","Температура","Влажность","Ветер","Давление","Тропики","Арктика",
+                "Космос","Планета","Звезда","Галактика","Комета","Астероид","Спутник","Космонавт","Ракета","Станция",
+                "Наука","Исследование","Эксперимент","Гипотеза","Теория","Закон","Формула","Алгебра","Геометрия","Статистика",
+                "Медицина","Болезнь","Лекарство","Вакцина","Операция","Терапия","Диагностика","Анализ","Доктор","Медсестра",
+                "Образование","Школа","Лицей","Колледж","Институт","Университет","Академия","Урок","Экзамен","Сертификат",
+                "Связь","Интернет","Электронная почта","СМС","Звонок","Видео","Конференция","Радио","Телевидение",
+                "Безопасность","Полиция","Милиция","Армия","Солдат","Офицер","Генерал","Подполковник","Майор","Лейтенант",
+                "Продукты","Хлеб","Мясо","Молоко","Сметана","Масло","Яйцо","Сыр","Кефир","Айран",
+                "Фрукты","Яблоко","Груша","Гранат","Виноград","Персик","Абрикос","Вишня","Клубника","Малина",
+                "Овощи","Картофель","Лук","Чеснок","Морковь","Дыня","Арбуз","Перец","Огурец","Капуста",
+                "Специи","Перец","Соль","Паприка","Зира","Куркума","Имбирь","Лавровый лист","Укроп","Мускат",
+                "Напитки","Вода","Чай","Кофе","Сок","Лимонад","Компот","Морс","Квас","Сельтер",
+                "Сладости","Шоколад","Кекс","Пирог","Торт","Вафли","Печенье","Карамель","Мармелад","Желе",
+                "Товары","Мука","Сахар","Соль","Масло","Рис","Макароны","Гречка","Соя","Кукуруза",
+                "Одежда","Рубашка","Брюки","Пиджак","Пальто","Куртка","Футболка","Сорочка","Костюм","Брюки",
+                "Аксессуары","Часы","Очки","Сумка","Кошелек","Ключ","Украшения","Шляпа","Шапка","Шарф",
+                "Косметика","Крем","Помада","Тушь","Маска","Лак","Краска","Пудра","Тушь для ресниц","Подводка",
+                "Бытовая техника","Холодильник","Стиральная машина","Плита","Телевизор","Компьютер","Телефон","Камера","Часы","Лампа",
+                "Кухонные принадлежности","Микроволновка","Блендер","Миксер","Сковорода","Кастрюля","Ложка","Нож","Разделочная доска","Приборы",
+                "Средства гигиены","Пылесос","Стиральный порошок","Универсальное средство","Шампунь","Мыло","Зубная паста","Зубная щетка","Бумага","Сумка",
+                "Детские товары","Смесь","Курица","Кукуруза","Макароны","Вода","Конфеты","Игрушка","Одежда","Посуда"
+            ],
+            en: [
+                "Apple","Pear","Grape","Pomegranate","Peach","Melon","Watermelon","Quince","Fig","Cherry",
+                "Apricot","Lemon","Orange","Banana","Kiwi","Pineapple","Raspberry","Strawberry","Blueberry","Mango",
+                "Bread","Milk","Cream","Butter","Cheese","Egg","Meat","Fish","Chicken","Lamb",
+                "Pilaf","Dumplings","Noodles","Kebab","Pastry","Ravioli","Cold soup","Soup","Rice soup","Stew",
+                "Street","Garden","School","University","Library","Museum","Theater","Cinema","Stadium","Market",
+                "Pharmacy","Hospital","Clinic","Bank","Post office","Hotel","Restaurant","Cafe","Teahouse","Park",
+                "River","Lake","Mountain","Field","Forest","Desert","Beach","Island","Valley","Canyon",
+                "Bus","Train","Airplane","Ship","Car","Bicycle","Motorcycle","Taxi","Subway","Tram",
+                "Phone","Computer","Television","Camera","Watch","Lamp","Refrigerator","Washer","Vacuum","Air conditioner",
+                "Table","Chair","Sofa","Bed","Wardrobe","Stairs","Door","Window","Balcony","Roof",
+                "Book","Pen","Pencil","Notebook","Paper","Newspaper","Magazine","Map","Calendar","Clock",
+                "Dog","Cat","Horse","Cow","Sheep","Goat","Camel","Donkey","Hen","Goose",
+                "Sun","Moon","Star","Cloud","Rain","Snow","Wind","Lightning","Hail","Fog",
+                "Winter","Spring","Summer","Autumn","January","February","March","April","May","June",
+                "July","August","September","October","November","December","Monday","Tuesday","Wednesday","Thursday",
+                "Friday","Saturday","Sunday","Hour","Minute","Second","Day","Week","Month","Year",
+                "White","Black","Red","Green","Yellow","Blue","Purple","Pink","Brown","Gray",
+                "Big","Small","Long","Short","High","Low","Left","Right","Center","Middle",
+                "Good","Bad","Beautiful","Ugly","Expensive","Cheap","New","Old","First","Last",
+                "Father","Mother","Brother","Sister","Son","Daughter","Child","Family","Friend","Neighbor",
+                "Work","Study","Write","Speak","Hear","See","Walk","Run","Sit","Sleep",
+                "Water","Tea","Coffee","Dessert","Chocolate","Cake","Pie","Cookie","Ice cream","Juice",
+                "Comrade","Teacher","Student","Governor","President","Minister","Deputy","Judge","Prosecutor","Lawyer",
+                "Law","Rule","Punishment","Reward","Right","Duty","Task","Responsibility","Trust","Loyalty",
+                "Love","Passion","Anger","Joy","Sorrow","Anxiety","Despair","Hope","Panic","Calm",
+                "Music","Song","Dance","Theater","Cinema","Series","Cartoon","Concert","Festival","Competition",
+                "Football","Basketball","Volleyball","Tennis","Chess","Gymnastics","Running","Swimming","Cycling","Skiing",
+                "Chemistry","Physics","Biology","Mathematics","History","Geography","Literature","English","Russian","Arabic",
+                "Doctor","Teacher","Engineer","Architect","Programmer","Journalist","Artist","Singer","Painter","Sculptor",
+                "Iron","Gold","Silver","Copper","Lead","Aluminum","Zinc","Tin","Platinum","Diamond",
+                "Flower","Tree","Leaf","Branch","Root","Fruit","Seed","Bud","Leaflet","Stem",
+                "Dog","Cat","Horse","Cow","Sheep","Goat","Camel","Donkey","Chicken","Duck",
+                "Lion","Tiger","Elephant","Monkey","Kangaroo","Zebra","Giraffe","Crocodile","Bear","Wolf",
+                "Fish","Carp","Salmon","Carp","Trout","Mackerel","Tuna","Caviar","Shrimp","Crab",
+                "Bird","Eagle","Falcon","Owl","Partridge","Chicken","Duck","Goose","Parrot","Swallow",
+                "Insect","Ant","Bee","Fly","Beetle","Butterfly","Grasshopper","Worm","Spider","Wing",
+                "Plant","Flowering","Tree","Bush","Grass","Fruit","Vegetable","Grain","Spice","Medicine",
+                "Clothing","Shirt","Pants","Jeans","Coat","Jacket","Jacket","T-shirt","Dress","Suit",
+                "Shoes","Boots","Shoes","Sneakers","Sandals","Hat","Hat","Helmet","Glasses","Watch",
+                "Jewelry","Chain","Ring","Earrings","Tie","Wristwatch","Bag","Wallet","Key","Lock",
+                "Weapon","Pistol","Rifle","Sword","Dagger","Arrow","Bow","Shield","Armor","Helmet",
+                "Tool","Hammer","Knife","Scissors","Axe","Oil","Matches","Skis","Timer","Compass",
+                "Transport","Car","Truck","Bus","Trolleybus","Tram","Subway","Taxi","Bicycle","Motorcycle",
+                "Construction","House","Building","Structures","Tower","Bridge","Road","Tunnel","Station","Airport",
+                "Technology","Phone","Computer","Tablet","Laptop","Printer","Scanner","Fax","Modem","Router",
+                "Kitchen","Stove","Gas","Microwave","Blender","Mixer","Pan","Pot","Spoon","Knife",
+                "Home","Room","Living room","Bedroom","Kitchen","Bathroom","Toilet","Balcony","Garage","Yard",
+                "Furniture","Table","Chair","Sofa","Armchair","Bed","Wardrobe","Nightstand","Stairs","Mirror",
+                "Press","Newspaper","Magazine","Book","Poster","Advertisement","Poster","Bulletin","Catalog","Brochure",
+                "Game","Chess","Backgammon","Dominoes","Cards","Stone","Paper","Scissors","Lego","Puzzle",
+                "Sport","Stadium","Playground","Ball","Racket","Stopwatch","Gymnastics","Fitness","Yoga","Karate",
+                "Art","Painting","Statue","Photography","Collection","Museum","Gallery","Exhibition","Show","Creativity",
+                "Religion","Mosque","Church","Synagogue","Buddhist temple","Prayer","Supplication","Quran","Bible","Torah",
+                "Philosophy","Logic","Ethics","Aesthetics","Metaphysics","Ontology","Epistemology","Dialectics","Axiology","Cosmology",
+                "Psychology","Memory","Thinking","Faith","Dream","Expectation","Fear","Stress","Depression","Happiness",
+                "Politics","President","Parliament","Government","Elections","Party","Constitution","Democracy","Republic","Monarchy",
+                "Economy","Money","Bank","Currency","Trade","Market","Production","Service","Insurance","Credit",
+                "Society","Culture","Traditions","Holiday","Nowruz","Ramadan","Eid al-Adha","Independence","Constitution","Flag",
+                "Geography","Uzbekistan","Tashkent","Samarkand","Bukhara","Khiva","Fergana","Andijan","Namangan","Kashkadarya",
+                "Nature","Landscape","Climate","Weather","Temperature","Humidity","Wind","Pressure","Tropics","Arctic",
+                "Space","Planet","Star","Galaxy","Comet","Asteroid","Satellite","Cosmonaut","Rocket","Station",
+                "Science","Research","Experiment","Hypothesis","Theory","Law","Formula","Algebra","Geometry","Statistics",
+                "Medicine","Disease","Medicine","Vaccine","Operation","Therapy","Diagnostics","Analysis","Doctor","Nurse",
+                "Education","School","Lyceum","College","Institute","University","Academy","Lesson","Exam","Certificate",
+                "Communication","Internet","Email","SMS","Call","Video","Conference","Radio","Television",
+                "Security","Police","Militia","Army","Soldier","Officer","General","Lieutenant Colonel","Major","Lieutenant",
+                "Products","Bread","Meat","Milk","Sour cream","Oil","Egg","Cheese","Kefir","Ayran",
+                "Fruits","Apple","Pear","Pomegranate","Grapes","Peach","Apricot","Cherry","Strawberry","Raspberry",
+                "Vegetables","Potato","Onion","Garlic","Carrot","Melon","Watermelon","Pepper","Cucumber","Cabbage",
+                "Spices","Pepper","Salt","Paprika","Cumin","Turmeric","Ginger","Bay leaf","Dill","Nutmeg",
+                "Drinks","Water","Tea","Coffee","Juice","Lemonade","Compote","Mors","Kvass","Seltzer",
+                "Sweets","Chocolate","Cake","Pie","Cake","Waffles","Cookies","Caramel","Marmalade","Jelly",
+                "Goods","Flour","Sugar","Salt","Oil","Rice","Pasta","Buckwheat","Soy","Corn",
+                "Clothing","Shirt","Pants","Jacket","Coat","Jacket","T-shirt","Dress","Suit","Pants",
+                "Accessories","Watch","Glasses","Bag","Wallet","Key","Jewelry","Hat","Hat","Scarf",
+                "Cosmetics","Cream","Lipstick","Mascara","Mask","Lacquer","Paint","Powder","Mascara","Eyeliner",
+                "Home appliances","Refrigerator","Washing machine","Stove","Television","Computer","Phone","Camera","Watch","Lamp",
+                "Kitchen utensils","Microwave","Blender","Mixer","Pan","Pot","Spoon","Knife","Cutting board","Devices",
+                "Hygiene products","Vacuum cleaner","Washing powder","Universal remedy","Shampoo","Soap","Toothpaste","Toothbrush","Paper","Bag",
+                "Children's products","Mixture","Chicken","Corn","Pasta","Water","Candy","Toy","Clothes","Dishes"
+            ]
+        };
+
+        const translations = {
+            uz: {
+                subtitle: "Oflayn o'yin",
+                langTitle: "Tilni tanlang",
+                setupTitle: "O'yin sozlamalari",
+                playerLabel: "O'yinchilar soni",
+                startBtn: "O'yinni boshlash",
+                backBtn: "Orqaga",
+                gameTitle: "O'YIN BOSHLANDI",
+                gameInfo: "So'zni ko'rish uchun kartani bosing",
+                spy: "JOSUS",
+                resetBtn: "Yangi o'yin"
+            },
+            ru: {
+                subtitle: "Офлайн игра",
+                langTitle: "Выберите язык",
+                setupTitle: "Настройка игры",
+                playerLabel: "Количество игроков",
+                startBtn: "Начать игру",
+                backBtn: "Назад",
+                gameTitle: "ИГРА НАЧАЛАСЬ",
+                gameInfo: "Нажмите на карточку, чтобы увидеть слово",
+                spy: "ШПИОН",
+                resetBtn: "Новая игра"
+            },
+            en: {
+                subtitle: "Offline game",
+                langTitle: "Select language",
+                setupTitle: "Game setup",
+                playerLabel: "Number of players",
+                startBtn: "Start game",
+                backBtn: "Back",
+                gameTitle: "GAME STARTED",
+                gameInfo: "Tap a card to see the word",
+                spy: "SPY",
+                resetBtn: "New game"
+            }
+        };
+
+        let currentLang = 'ru';
+        let playerCount = 4;
+        let gameWord = '';
+        let spyIndex = -1;
+        let revealedCards = new Set();
+
+        function selectLanguage(lang) {
+            currentLang = lang;
+            updateTranslations();
+            document.getElementById('langScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'flex';
+            document.getElementById('setupScreen').classList.add('fade-in');
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLang];
+            document.getElementById('setupTitle').textContent = t.setupTitle;
+            document.getElementById('playerLabel').textContent = t.playerLabel;
+            document.getElementById('startBtn').textContent = t.startBtn;
+            document.getElementById('backBtn').textContent = t.backBtn;
+            document.getElementById('gameTitle').textContent = t.gameTitle;
+            document.getElementById('gameInfo').textContent = t.gameInfo;
+            document.getElementById('resetBtn').textContent = t.resetBtn;
+        }
+
+        function changePlayers(delta) {
+            playerCount += delta;
+            if (playerCount < 3) playerCount = 3;
+            if (playerCount > 12) playerCount = 12;
+            document.getElementById('playerCount').textContent = playerCount;
+        }
+
+        function goBack() {
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('langScreen').style.display = 'flex';
+        }
+
+        function startGame() {
+            const langWords = words[currentLang];
+            gameWord = langWords[Math.floor(Math.random() * langWords.length)];
+            spyIndex = Math.floor(Math.random() * playerCount);
+            revealedCards.clear();
+
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < playerCount; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.index = i;
+                card.innerHTML = '<div class="card-number">' + (i + 1) + '</div>';
+                card.onclick = function() { revealCard(i, card); };
+                grid.appendChild(card);
+            }
+
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'flex';
+            document.getElementById('gameScreen').classList.add('fade-in');
+        }
+
+        function revealCard(index, cardElement) {
+            if (revealedCards.has(index)) return;
+            revealedCards.add(index);
+            const t = translations[currentLang];
+
+            if (index === spyIndex) {
+                cardElement.innerHTML = '<div style="text-align:center"><div class="spy-icon">&#128373;</div><div class="card-word spy">' + t.spy + '</div></div><div class="timer-bar"></div>';
+            } else {
+                cardElement.innerHTML = '<div class="card-word">' + gameWord + '</div><div class="timer-bar"></div>';
+            }
+
+            cardElement.classList.add('revealed');
+
+            setTimeout(function() {
+                cardElement.innerHTML = '<div class="card-number">' + (index + 1) + '</div>';
+                cardElement.classList.remove('revealed');
+                cardElement.classList.add('used');
+            }, 1000);
+        }
+
+        function resetGame() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'flex';
+            document.getElementById('setupScreen').classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
