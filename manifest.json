@@ -1,5 +1,5 @@
 {
-  "name": "ШПИОН - Игра",
+  "name": "ШПИОН",
   "short_name": "ШПИОН",
   "description": "Увлекательная игра в шпиона для компании друзей",
   "start_url": "/",
@@ -41,12 +41,7 @@
       "short_name": "Быстро",
       "description": "Начать новую игру с 4 игроками",
       "url": "/?quick=true",
-      "icons": [
-        {
-          "src": "icons/shortcut-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "icons": []
     }
   ]
 }
